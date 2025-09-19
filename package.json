@@ -1,0 +1,19 @@
+{
+  "name": "devreno",
+  "version": "1.0.0",
+  "description": "DevReno development environment",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "development",
+    "environment"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

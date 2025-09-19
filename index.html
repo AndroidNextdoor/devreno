@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>/dev/reno - Development Environment</title>
+    <meta property="og:image" content="/assets/images/og-banner.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="theme-environmental">
+    
+    <div class="hero" id="hero-section">
+        <div class="theme-slider">
+            <button class="slider-btn slider-prev" id="slider-prev" aria-label="Previous theme">‹</button>
+            <button class="slider-btn slider-next" id="slider-next" aria-label="Next theme">›</button>
+        </div>
+        <div class="hero-content">
+            <h1>/dev/reno</h1>
+            <p class="hero-subtitle">The Reno Developers Meetup</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="social-links">
+            <a href="https://www.meetup.com/dev-reno/" target="_blank" rel="noopener noreferrer" class="social-link" title="Join us on Meetup">
+                <i class="fab fa-meetup" style="font-size: 20px;"></i>
+                <span>Meetup</span>
+            </a>
+            <a href="https://www.instagram.com/dev.reno.nv/" target="_blank" rel="noopener noreferrer" class="social-link" title="Follow us on Instagram">
+                <i class="fab fa-instagram" style="font-size: 20px;"></i>
+                <span>Instagram</span>
+            </a>
+            <a href="https://devreno.slack.com/" target="_blank" rel="noopener noreferrer" class="social-link" title="Join our Slack community">
+                <i class="fab fa-slack" style="font-size: 20px;"></i>
+                <span>Slack</span>
+            </a>
+        </div>
+        
+        <div class="terminal-container">
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="btn red"></span>
+                        <span class="btn yellow"></span>
+                        <span class="btn green"></span>
+                    </div>
+                    <div class="terminal-title">Terminal - /dev/reno</div>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-output" id="terminal-output">
+                        <div class="welcome-message">Welcome to /dev/reno Development Environment</div>
+                        <div class="system-info">Reno Remote Work Terminal v1.0</div>
+                        <div class="prompt-line">
+                            <span class="prompt">/dev/reno ></span>
+                            <span class="cursor">|</span>
+                        </div>
+                        <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status">
+            <h3>We Are Looking for Lightning Talk Speakers!</h3>
+            <p><strong>Want to give a lightning talk? We would love to put you on the stage!</strong></p>
+            <p>Anyone with a tech topic they're passionate about is encouraged to join! Share your expertise, projects, or cool new tech you've discovered.</p>
+            <div class="event-details">
+                <p><strong>📅 When:</strong> First Thursday of Every Month</p>
+                <p><strong>🕕 Time:</strong> 6PM</p>
+                <p><strong>📍 Where:</strong> EP Listening Lounge</p>
+            </div>
+            <a href="https://www.meetup.com/dev-reno/" class="cta-button">Learn More Here!</a>
+        </div>
+
+        <div class="spotlight-section">
+            <div class="spotlight-card">
+                <img src="/assets/images/lightning-talks-meetup.png" alt="Lightning Talks Meetup">
+                <div class="content">
+                    <h3>What are Lightning Talks?</h3>
+                    <p>Fast-paced, engaging presentations that pack a punch of knowledge into 5-10 minutes. It's the perfect way to learn something new, get inspired, and connect with fellow tech enthusiasts.</p>
+                </div>
+            </div>
+            
+            <div class="spotlight-card">
+                <img src="/assets/images/lightning-talks-speaker.png" alt="Be a Speaker">
+                <div class="content">
+                    <h3>Anyone Can Speak!</h3>
+                    <p>No experience needed! Share your passion for technology, recent projects, or cool discoveries. Lightning talks are the perfect low-pressure way to start public speaking in a supportive community.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/js/main.js"></script>
+</body>
+</html>

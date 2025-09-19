@@ -6,14 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const themes = [
         {
             name: 'environmental',
-            background: "url('/assets/images/hero-remote-work.webp')",
-            logo: '/assets/images/devrenologo.webp',
+            background: "url('assets/images/hero-remote-work.webp')",
+            logo: 'assets/images/devrenologo.webp',
             class: 'theme-environmental'
         },
         {
             name: 'disco',
-            background: "url('/assets/images/retro-sunset-logo.webp')",
-            logo: '/assets/images/devrenologo.webp',
+            background: "url('assets/images/retro-sunset-logo.webp')",
+            logo: 'assets/images/devrenologo.webp',
             class: 'theme-disco'
         }
     ];

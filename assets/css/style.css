@@ -94,7 +94,7 @@ body {
 }
 
 .hero {
-    background: url('/assets/images/hero-remote-work.webp');
+    background: url('../images/hero-remote-work.webp');
     background-size: cover;
     background-position: center;
     height: 70vh;

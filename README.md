@@ -22,7 +22,7 @@ A community website for programmers in the Reno/Tahoe area featuring an interact
 ### Setup
 1. Clone the repository:
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/AndroidNextdoor/devreno.git
    cd devreno
    ```
 
@@ -41,31 +41,6 @@ A community website for programmers in the Reno/Tahoe area featuring an interact
 4. Open your browser to `http://localhost:5001` (or the port shown in the terminal)
 
 ## Deploying to GitHub Pages
-
-### Step 1: Prepare Your Repository
-1. **Create a new GitHub repository** (if you haven't already):
-   - Go to [GitHub](https://github.com) and create a new repository
-   - Name it something like `devreno-website` or `dev-reno`
-   - Don't initialize with README (we already have one)
-
-### Step 2: Push Your Code to GitHub
-```bash
-# Initialize git (if not already done)
-git init
-
-# Add all files
-git add .
-
-# Make your first commit
-git commit -m "Initial commit - /dev/reno website"
-
-# Add your GitHub repository as origin
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-
-# Push to main branch
-git branch -M main
-git push -u origin main
-```
 
 ### Step 3: Enable GitHub Pages
 1. **Go to your repository on GitHub**

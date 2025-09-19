@@ -40,52 +40,6 @@ A community website for programmers in the Reno/Tahoe area featuring an interact
 
 4. Open your browser to `http://localhost:5001` (or the port shown in the terminal)
 
-## Deploying to GitHub Pages
-
-### Step 3: Enable GitHub Pages
-1. **Go to your repository on GitHub**
-2. **Click on "Settings"** (in the repository navigation)
-3. **Scroll down to "Pages"** in the left sidebar
-4. **Under "Source"**, select "Deploy from a branch"
-5. **Select "main" branch** and "/ (root)" folder
-6. **Click "Save"**
-
-### Step 4: Configure for GitHub Pages (Static Hosting)
-Since this is a static site (no Node.js server needed), GitHub Pages will serve the files directly:
-
-1. **The `index.html` will be your homepage**
-2. **All assets in `/assets/` will be served statically**
-3. **Your site will be available at**: `https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/`
-
-### Step 5: Custom Domain (Optional)
-If you want to use a custom domain like `devreno.com`:
-
-1. **Purchase a domain** from a registrar
-2. **In your repository**, create a file called `CNAME` with your domain:
-   ```
-   devreno.com
-   ```
-3. **Add the CNAME file to your repository**:
-   ```bash
-   echo "devreno.com" > CNAME
-   git add CNAME
-   git commit -m "Add custom domain"
-   git push
-   ```
-4. **Configure DNS** with your domain registrar:
-   - Add a CNAME record pointing to `YOUR_USERNAME.github.io`
-5. **In GitHub Settings > Pages**, enter your custom domain and enable "Enforce HTTPS"
-
-### Step 6: Automatic Deployments
-Every time you push changes to the `main` branch, GitHub Pages will automatically redeploy your site!
-
-```bash
-# Make changes to your files
-git add .
-git commit -m "Update website content"
-git push
-# Your site will automatically update in a few minutes
-```
 
 ## Project Structure
 
@@ -104,13 +58,6 @@ devreno/
 ├── package.json            # Node.js dependencies
 └── README.md               # This file
 ```
-
-## Maintenance
-
-- **Update social links**: Edit the URLs in `index.html`
-- **Modify terminal responses**: Update the `responses` array in `assets/js/main.js`
-- **Change themes**: Modify CSS variables in `assets/css/style.css`
-- **Add new social platforms**: Add new links in the `.social-links` section
 
 ## Community Links
 

@@ -18,7 +18,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
     
-    let currentThemeIndex = 0;
+    // Determine default theme based on Pacific Time
+    function getDefaultThemeIndex() {
+        const now = new Date();
+        // Convert to Pacific Time
+        const pacificTime = new Date(now.toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
+        const hour = pacificTime.getHours();
+        
+        // 6 AM to 6 PM (6-17) = environmental theme (index 0)
+        // 6 PM to 6 AM (18-23, 0-5) = disco theme (index 1)
+        return (hour >= 6 && hour < 18) ? 0 : 1;
+    }
+    
+    let currentThemeIndex = getDefaultThemeIndex();
     const heroSection = document.getElementById('hero-section');
     const headerLogo = document.querySelector('.header-logo');
     const prevBtn = document.getElementById('slider-prev');
@@ -107,6 +119,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+    
+    // Initialize theme based on time of day
+    changeTheme(currentThemeIndex);
     
     createTypingDisplay();
     

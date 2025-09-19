@@ -241,12 +241,14 @@ body {
 
 .theme-disco .hero h1 {
     color: #ff00ff !important;
-    text-shadow: 0 0 20px #ff00ff, 2px 4px 8px rgba(0, 0, 0, 0.8);
+    border: 2px solid #ff00ff !important;
+    box-shadow: 0 0 0 2px #ff00ff, 0 0 15px #ff00ff, 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 0, 255, 0.3) !important;
 }
 
 .theme-disco .hero-subtitle {
     color: #ff00ff !important;
-    text-shadow: 0 0 15px #ff00ff, 2px 4px 8px rgba(0, 0, 0, 0.8);
+    border: 2px solid #ff00ff !important;
+    box-shadow: 0 0 0 1px #ff00ff, 0 0 12px #ff00ff, 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 0, 255, 0.2) !important;
 }
 
 .container {
@@ -423,14 +425,15 @@ body {
 
 .theme-disco .social-link {
     background: var(--surface);
-    border: 2px solid #00ff88;
+    border: 2px solid #ff00ff;
     color: var(--ink);
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
 }
 
 .theme-disco .social-link:hover {
     box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
     color: #00ff88;
+    border-color: #00ff88;
 }
 
 /* Terminal Styles */
@@ -452,8 +455,8 @@ body {
 }
 
 .theme-disco .terminal {
-    box-shadow: 0 0 30px rgba(0, 255, 136, 0.5), inset 0 0 20px rgba(0, 255, 136, 0.1);
-    border: 2px solid #00ff88;
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.5), inset 0 0 20px rgba(255, 0, 255, 0.1);
+    border: 2px solid #ff00ff;
     background: var(--terminal-bg);
 }
 
@@ -546,13 +549,13 @@ body {
 }
 
 .theme-disco #typing-display {
-    color: #00ff88 !important;
-    text-shadow: 0 0 10px #00ff88;
+    color: #ff00ff !important;
+    text-shadow: 0 0 10px #ff00ff;
 }
 
 .theme-disco .terminal-output div {
-    color: #00ff88 !important;
-    text-shadow: 0 0 8px #00ff88;
+    color: #ff00ff !important;
+    text-shadow: 0 0 8px #ff00ff;
 }
 
 .terminal-input {

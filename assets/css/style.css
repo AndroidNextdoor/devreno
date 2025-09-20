@@ -1951,6 +1951,14 @@ body {
     box-shadow: var(--shadow);
 }
 
+/* Range slider styling for salary filter */
+#salary-min-range {
+    width: 100%;
+}
+#salary-min-value {
+    color: var(--accent-500);
+}
+
 .filter-group {
     margin-bottom: 20px;
 }

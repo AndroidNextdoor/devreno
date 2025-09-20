@@ -20,7 +20,8 @@
         jobType: 'all',
         distance: '75',
         tech: 'all',
-        search: ''
+        search: '',
+        minSalary: 0
     };
 
     // Performance: Use requestIdleCallback for non-critical operations
@@ -94,12 +95,19 @@
         return found;
     }
 
+    // Normalize known location anomalies for display
+    function normalizeLocation(loc) {
+        if (!loc) return '';
+        return String(loc).replace(/carson mall/gi, 'Carson City');
+    }
+
     // Create external job card
     function createExternalJobCard(job) {
         const salary = formatSalary(job.salary_min, job.salary_max);
         const date = formatJobDate(job.created);
         const techStack = extractTechStack(job.description);
         const isLocal = job.type === 'local';
+        const displayLocation = normalizeLocation(job.location);
 
         const card = document.createElement('div');
         card.className = 'external-job-card';
@@ -111,7 +119,7 @@
                         <span class="external-job-company">${escapeHtml(job.company)}</span>
                         <span class="external-job-location">
                             <i class="fas fa-map-marker-alt"></i>
-                            ${escapeHtml(job.location)}
+                            ${escapeHtml(displayLocation)}
                         </span>
                         ${isLocal ? '<span class="job-type-badge local-badge">Local</span>' : '<span class="job-type-badge remote-badge">Remote</span>'}
                     </div>
@@ -248,8 +256,27 @@
                 if (!searchableText.includes(searchTerm)) return false;
             }
 
+            // Salary minimum filter
+            const min = Number(currentFilters.minSalary) || 0;
+            if (min > 0) {
+                const sMin = typeof job.salary_min === 'number' ? job.salary_min : (job.salary_min ? Number(job.salary_min) : NaN);
+                const sMax = typeof job.salary_max === 'number' ? job.salary_max : (job.salary_max ? Number(job.salary_max) : NaN);
+                const best = !isNaN(sMax) ? sMax : (!isNaN(sMin) ? sMin : NaN);
+                if (isNaN(best) || best < min) return false;
+            }
+
             return true;
         });
+    }
+
+    function sortJobs(jobs) {
+        const arr = jobs.slice();
+        arr.sort((a, b) => {
+            const da = a.created ? new Date(a.created).getTime() : 0;
+            const db = b.created ? new Date(b.created).getTime() : 0;
+            return db - da; // Always newest first
+        });
+        return arr;
     }
 
     // Clear all jobs and reload with current filters
@@ -258,7 +285,7 @@
         externalJobsContainer.innerHTML = '';
 
         // Apply filters to all loaded jobs
-        const filteredJobs = filterJobs(allJobs);
+        const filteredJobs = sortJobs(filterJobs(allJobs));
 
         if (filteredJobs.length === 0) {
             showNoResultsMessage();
@@ -267,6 +294,10 @@
 
         // Re-render filtered jobs
         renderExternalJobs(filteredJobs);
+        // Keep load more visible if API reports more available
+        if (hasMoreJobs) {
+            loadMoreContainer.style.display = 'flex';
+        }
     }
 
     // Show no results message
@@ -306,7 +337,11 @@
 
             // Store jobs for filtering
             allJobs.push(...data.jobs);
-            renderExternalJobs(data.jobs);
+
+            // Always re-render full list sorted by newest first to ensure latest at top
+            externalJobsContainer.innerHTML = '';
+            renderExternalJobs(sortJobs(filterJobs(allJobs)));
+
             currentPage++;
 
             // Check if we should continue loading
@@ -367,6 +402,8 @@
         const clearFiltersBtn = document.getElementById('clear-filters');
         const searchInput = document.getElementById('job-search-input');
         const clearSearchBtn = document.getElementById('clear-search-btn');
+        const salaryRange = document.getElementById('salary-min-range');
+        const salaryValue = document.getElementById('salary-min-value');
 
         // Add click handlers to filter buttons
         filterButtons.forEach(btn => {
@@ -438,12 +475,21 @@
                 jobType: 'all',
                 distance: '75',
                 tech: 'all',
-                search: ''
+                search: '',
+                minSalary: 0
             };
 
             // Clear search input
             if (searchInput) {
                 searchInput.value = '';
+            }
+
+            // Reset salary and sort controls
+            if (salaryRange) {
+                salaryRange.value = 0;
+            }
+            if (salaryValue) {
+                salaryValue.textContent = '$0';
             }
 
             // Reset button states
@@ -494,6 +540,26 @@
                 reloadJobsWithFilters();
             }
         });
+
+        // Salary slider handlers
+        function formatCurrencyShort(val) {
+            const num = Number(val) || 0;
+            if (num >= 1000000) return `$${(num / 1000000).toFixed(1)}M`;
+            if (num >= 1000) return `$${(num / 1000).toFixed(0)}K`;
+            return `$${num.toLocaleString()}`;
+        }
+        if (salaryRange && salaryValue) {
+            // Initialize display
+            salaryValue.textContent = formatCurrencyShort(salaryRange.value);
+            salaryRange.addEventListener('input', (e) => {
+                salaryValue.textContent = formatCurrencyShort(e.target.value);
+            });
+            salaryRange.addEventListener('change', (e) => {
+                currentFilters.minSalary = Number(e.target.value) || 0;
+                reloadJobsWithFilters();
+            });
+        }
+
     }
 
     // Initialize external jobs page
@@ -520,7 +586,8 @@
 
             // Store jobs for filtering
             allJobs.push(...data.jobs);
-            renderExternalJobs(data.jobs);
+            externalJobsContainer.innerHTML = '';
+            renderExternalJobs(sortJobs(filterJobs(allJobs)));
             currentPage++;
 
             // Show load more button if there are more jobs

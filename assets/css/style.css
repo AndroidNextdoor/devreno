@@ -1331,16 +1331,18 @@ body {
 }
 
 .job-card {
+    overflow: auto;
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 24px;
+    padding: 20px;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 .job-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow);
     border-color: var(--accent-500);
 }
@@ -1374,7 +1376,21 @@ body {
 .job-date-only {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 8px;
+}
+
+.job-poster {
+    color: var(--ink-muted);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     margin-bottom: 12px;
+}
+
+.job-poster i {
+    color: var(--accent-500);
+    font-size: 0.9rem;
 }
 
 .job-company {
@@ -1895,11 +1911,33 @@ body {
     }
 
     .nav-links {
-        position: relative;
-        top: auto;
-        left: auto;
-        text-align: center;
-        margin-bottom: 20px;
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        text-align: left;
+        margin-bottom: 0;
+    }
+
+    .jobs-container,
+    .external-jobs-container {
+        grid-template-columns: 1fr;
+    }
+
+    .job-card,
+    .external-job-card {
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 16px;
+    }
+
+    .container {
+        padding: 16px;
+    }
+
+    .job-text,
+    .external-job-description {
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 }
 
@@ -2153,4 +2191,32 @@ body {
 .no-results-message p {
     margin: 0;
     font-size: 0.9rem;
+}
+
+/* Theme-specific internal job card styling (match external card aesthetics) */
+.theme-disco .job-card {
+    border-color: var(--accent-500);
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+}
+
+.theme-disco .job-card:hover {
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+}
+
+.theme-gearfire .job-card {
+    border-color: var(--accent-500);
+    box-shadow: 0 0 10px rgba(255, 102, 0, 0.2);
+}
+
+.theme-gearfire .job-card:hover {
+    box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
+}
+
+.theme-lightning .job-card {
+    border-color: var(--accent-500);
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.2);
+}
+
+.theme-lightning .job-card:hover {
+    box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
 }

@@ -119,12 +119,18 @@
         // Create URL previews if any URLs exist
         const urlPreviews = jobInfo.urls.map(url => createUrlPreview(url)).join('');
 
+        const poster = message.userName ? `<div class="job-poster"><i class="fas fa-user"></i> Posted by ${escapeHtml(message.userName)}</div>` : '';
+        if (!message.userName) {
+            console.warn('[jobs.js] Missing userName for message', { ts: message.ts, user: message.user, hasUserProfile: !!message.user_profile });
+        }
+
         const card = document.createElement('div');
         card.className = 'job-card';
         card.innerHTML = `
             <div class="job-date-only">
                 <span class="job-date">${timestamp}</span>
             </div>
+            ${poster}
             <div class="job-content">
                 <div class="job-text">${processedMessage.text}</div>
                 ${urlPreviews}
@@ -209,6 +215,13 @@
                 return;
             }
 
+            console.log('[jobs.js] /api/jobs response:', {
+                total: data.messages.length,
+                sampleFirst: data.messages[0] ? { ts: data.messages[0].ts, user: data.messages[0].user, bot_id: data.messages[0].bot_id, userName: data.messages[0].userName } : null,
+            });
+            const countWithName = data.messages.filter(m => m.userName).length;
+            console.log('[jobs.js] Messages with userName:', countWithName, 'without userName:', data.messages.length - countWithName);
+
             // Filter out bot messages, join/leave messages, and sort by timestamp (newest first)
             const jobMessages = data.messages
                 .filter(msg => {
@@ -229,6 +242,9 @@
                 showEmptyState();
                 return;
             }
+
+            const withPoster = jobMessages.filter(m => !!m.userName).length;
+            console.log('[jobs.js] Filtered job messages:', { total: jobMessages.length, withPoster, withoutPoster: jobMessages.length - withPoster });
 
             renderJobs(jobMessages);
         } catch (error) {

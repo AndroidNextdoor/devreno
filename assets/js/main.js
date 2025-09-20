@@ -161,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let promptCount = 0;
     const terminalInput = document.getElementById('terminal-input');
     const terminalOutput = document.getElementById('terminal-output');
+    const hasTerminal = !!terminalInput && !!terminalOutput;
     
     const responses = [
         "Bro, I'm Static. Come on....",
@@ -175,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Create typing display element
     function createTypingDisplay() {
+        if (!hasTerminal) return;
         if (displayElement) {
             displayElement.remove();
         }
@@ -197,16 +199,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize theme based on time of day
     changeTheme(currentThemeIndex);
     
-    createTypingDisplay();
+    if (hasTerminal) {
+        createTypingDisplay();
+    }
     
     // Make cursor clickable to focus input
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('cursor') || e.target.closest('.prompt-line')) {
-            terminalInput.focus();
-        }
-    });
+    if (hasTerminal) {
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('cursor') || e.target.closest('.prompt-line')) {
+                terminalInput && terminalInput.focus();
+            }
+        });
+    }
     
-    terminalInput.addEventListener('input', function(e) {
+    if (terminalInput) terminalInput.addEventListener('input', function(e) {
         typingText = terminalInput.value;
         console.log('Typing:', typingText);
         if (displayElement) {
@@ -217,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    terminalInput.addEventListener('keypress', function(e) {
+    if (terminalInput) terminalInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             const command = terminalInput.value.trim();
             promptCount++;

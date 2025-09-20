@@ -1,5 +1,5 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+# Static deployment workflow for /dev/reno to GitHub Pages
+name: Deploy /dev/reno Static Site to Pages
 
 on:
   # Runs on pushes targeting the default branch
@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
+  # Build and deploy static files
   deploy:
     environment:
       name: github-pages
@@ -31,13 +31,65 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Build static version
+        run: |
+          # Create a static build directory
+          mkdir -p dist
+
+          # Copy static HTML files
+          cp index.html dist/
+          cp jobs.html dist/
+
+          # Copy all assets
+          cp -r assets dist/
+
+          # Create a modified jobs.html for static deployment
+          sed -i 's|<script src="assets/js/jobs.js" defer></script>||g' dist/jobs.html
+          sed -i 's|<script src="assets/js/external-jobs.js" defer></script>||g' dist/jobs.html
+
+          # Add static message for jobs page
+          cat >> dist/jobs.html << 'EOF'
+          <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            const jobsLoading = document.getElementById('jobs-loading');
+            const externalJobsLoading = document.getElementById('external-jobs-loading');
+
+            if (jobsLoading) {
+              jobsLoading.innerHTML = '<div style="text-align: center; padding: 40px;"><h3>Jobs functionality requires server deployment</h3><p>This static version doesn\'t include job search functionality.<br/>For full features, deploy to a Node.js platform like Vercel or Netlify.</p><p><a href="https://github.com/AndroidNextdoor/devreno" target="_blank">View deployment instructions →</a></p></div>';
+            }
+
+            if (externalJobsLoading) {
+              externalJobsLoading.style.display = 'none';
+            }
+          });
+          </script>
+          EOF
+
+          # Create README for GitHub Pages
+          cat > dist/README.md << 'EOF'
+          # /dev/reno - Static Deployment
+
+          This is the static version deployed to GitHub Pages.
+
+          ## Full Version
+          For the complete experience including job search functionality, deploy to a platform that supports Node.js:
+          - **Vercel**: Connect your GitHub repo for automatic deployment
+          - **Netlify**: Enable GitHub integration with environment variables
+          - **Heroku**: Deploy with the Node.js buildpack
+
+          ## Local Development
+          See the main repository for full setup instructions: https://github.com/AndroidNextdoor/devreno
+          EOF
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: './dist'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

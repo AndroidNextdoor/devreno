@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>/dev/reno Jobs - Developer Opportunities in Reno</title>
+
+    <!-- Enhanced Open Graph for social sharing -->
+    <meta property="og:title" content="/dev/reno Jobs - Developer Opportunities in Reno">
+    <meta property="og:description" content="Latest job opportunities for developers in the Reno/Tahoe area.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://devreno.us/jobs">
+    <meta property="og:image" content="https://devreno.us/assets/images/SocialShare.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="/dev/reno - The Reno Developers Meetup">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="theme-environmental">
+
+    <div class="hero" id="hero-section">
+        <div class="theme-slider">
+            <button class="slider-btn slider-prev" id="slider-prev" aria-label="Previous theme">‹</button>
+            <button class="slider-btn slider-next" id="slider-next" aria-label="Next theme">›</button>
+        </div>
+        <div class="hero-content">
+            <h1><i class="fas fa-briefcase" style="color: var(--accent-color); margin-right: 0.5rem;"></i>/dev/reno jobs</h1>
+            <p class="hero-subtitle">Developer Opportunities in Reno/Tahoe</p>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="jobs-header">
+            <h2>Latest Job Postings</h2>
+            <p>Jobs posted in our Slack #jobs channel by the Reno developer community</p>
+        </div>
+
+        <div class="jobs-loading" id="jobs-loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Loading latest job opportunities...</span>
+        </div>
+
+        <div class="jobs-container" id="jobs-container">
+            <!-- Jobs will be loaded here -->
+        </div>
+
+        <div class="jobs-footer">
+            <p>Want to post a job? Join our <a href="https://devreno.slack.com/" target="_blank">Slack community</a> and share in the #jobs channel.</p>
+        </div>
+
+        <!-- Local & Remote Software Jobs Section -->
+        <div class="external-jobs-section">
+            <div class="external-jobs-header">
+                <h2>Local & Remote Software Engineering Opportunities</h2>
+                <p>Software engineering positions in Reno area and remote opportunities</p>
+
+                <!-- Job Filters -->
+                <div class="job-filters">
+                    <div class="filter-group search-group">
+                        <label class="filter-label">Search Jobs:</label>
+                        <div class="search-input-container">
+                            <input type="text"
+                                   id="job-search-input"
+                                   class="search-input"
+                                   placeholder="Search by title, company, or keywords..."
+                                   autocomplete="off">
+                            <i class="fas fa-search search-icon"></i>
+                            <button class="clear-search-btn" id="clear-search-btn" title="Clear search">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label class="filter-label">Job Type:</label>
+                            <div class="filter-buttons">
+                                <button class="filter-btn active" data-filter="all" data-type="jobType">All</button>
+                                <button class="filter-btn" data-filter="local" data-type="jobType">Local Only</button>
+                                <button class="filter-btn" data-filter="remote" data-type="jobType">Remote Only</button>
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <label class="filter-label">Distance from Reno:</label>
+                            <div class="filter-buttons">
+                                <button class="filter-btn active" data-filter="75" data-type="distance">75 miles</button>
+                                <button class="filter-btn" data-filter="50" data-type="distance">50 miles</button>
+                                <button class="filter-btn" data-filter="25" data-type="distance">25 miles</button>
+                                <button class="filter-btn" data-filter="10" data-type="distance">10 miles</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-group tech-group">
+                        <label class="filter-label">Programming Languages:</label>
+                        <div class="filter-buttons tech-filters">
+                            <button class="filter-btn active" data-filter="all" data-type="tech">All</button>
+                            <button class="filter-btn" data-filter="javascript" data-type="tech">JavaScript</button>
+                            <button class="filter-btn" data-filter="python" data-type="tech">Python</button>
+                            <button class="filter-btn" data-filter="java" data-type="tech">Java</button>
+                            <button class="filter-btn" data-filter="react" data-type="tech">React</button>
+                            <button class="filter-btn" data-filter="node.js" data-type="tech">Node.js</button>
+                            <button class="filter-btn" data-filter="php" data-type="tech">PHP</button>
+                            <button class="filter-btn" data-filter="c#" data-type="tech">C#</button>
+                            <button class="filter-btn" data-filter="go" data-type="tech">Go</button>
+                            <button class="filter-btn" data-filter="ruby" data-type="tech">Ruby</button>
+                            <button class="filter-btn" data-filter="rust" data-type="tech">Rust</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button class="filter-btn clear-filters" id="clear-filters">
+                            <i class="fas fa-times"></i>
+                            Clear All Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="external-jobs-loading" id="external-jobs-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>Loading software engineering opportunities...</span>
+            </div>
+
+            <div class="external-jobs-container" id="external-jobs-container">
+                <!-- External jobs will be loaded here -->
+            </div>
+
+            <div class="load-more-container" id="load-more-container" style="display: none;">
+                <button class="load-more-btn" id="load-more-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    Load More Jobs
+                </button>
+            </div>
+
+            <div class="jobs-end-message" id="jobs-end-message" style="display: none;">
+                <p>🎉 You've reached the end! All available software engineering opportunities have been loaded.</p>
+            </div>
+        </div>
+
+        <div class="contact-section">
+            <h3>Questions or Want to Get Involved?</h3>
+            <p>Reach out to learn more about /dev/reno or discuss speaking opportunities.</p>
+            <a href="mailto:andrew@devreno.us" class="contact-link">Contact Me</a>
+        </div>
+    </div>
+
+    <!-- Load main.js for theme functionality -->
+    <script src="assets/js/main.js"></script>
+    <!-- Load jobs-specific functionality only when needed -->
+    <script src="assets/js/jobs.js" defer></script>
+    <!-- Load external jobs functionality -->
+    <script src="assets/js/external-jobs.js" defer></script>
+</body>
+</html>

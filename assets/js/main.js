@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
         displayElement.style.color = '#00ff88';
         displayElement.style.marginLeft = '8px';
         displayElement.id = 'typing-display';
-        
+
         const allPromptLines = document.querySelectorAll('.prompt-line');
         const lastPromptLine = allPromptLines[allPromptLines.length - 1];
         if (lastPromptLine) {
@@ -190,43 +190,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const currentPromptLine = document.querySelector('.prompt-line:last-child');
             if (currentPromptLine) {
                 const cursor = currentPromptLine.querySelector('.cursor');
-                const typingDisplay = currentPromptLine.querySelector('#typing-display');
-
-                // Remove the typing display if it exists
-                if (typingDisplay) {
-                    typingDisplay.remove();
-                }
+                if (cursor) cursor.remove();
 
                 // Add the typed command to this line
                 const typedCommand = document.createElement('span');
-                typedCommand.textContent = command;
-                typedCommand.style.marginLeft = '8px';
-
-                // Use theme-appropriate color for the command
-                const currentTheme = document.body.className;
-                if (currentTheme.includes('theme-disco')) {
-                    typedCommand.style.color = '#ff00ff';
-                    typedCommand.style.textShadow = '0 0 10px #ff00ff';
-                } else if (currentTheme.includes('theme-gearfire')) {
-                    typedCommand.style.color = '#ff6600';
-                    typedCommand.style.textShadow = '0 0 10px #ff6600';
-                } else if (currentTheme.includes('theme-lightning')) {
-                    typedCommand.style.color = '#00ddff';
-                    typedCommand.style.textShadow = '0 0 10px #00ddff';
-                } else if (currentTheme.includes('theme-winter')) {
-                    typedCommand.style.color = '#85c1e9';
-                    typedCommand.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.6)';
-                } else {
-                    typedCommand.style.color = '#4ecdc4';
-                }
-
-                // Insert before cursor or append to end
-                if (cursor) {
-                    currentPromptLine.insertBefore(typedCommand, cursor);
-                    cursor.remove();
-                } else {
-                    currentPromptLine.appendChild(typedCommand);
-                }
+                typedCommand.textContent = ' ' + command;
+                typedCommand.style.color = '#00ff88';
+                currentPromptLine.appendChild(typedCommand);
             }
             
             // Create response

@@ -6,28 +6,66 @@ document.addEventListener('DOMContentLoaded', function() {
     const themes = [
         {
             name: 'environmental',
-            background: "url('assets/images/hero-remote-work.webp')",
-            logo: 'assets/images/devrenologo.webp',
+            background: "url('assets/images/hero-summer-work.webp')",
+            logo: 'assets/images/granola-devreno.webp',
             class: 'theme-environmental'
         },
         {
             name: 'disco',
             background: "url('assets/images/retro-sunset-logo.webp')",
-            logo: 'assets/images/devrenologo.webp',
+            logo: 'assets/images/granola-devreno.webp',
             class: 'theme-disco'
+        },
+        {
+            name: 'gearfire',
+            background: "url('assets/images/gearfire.png')",
+            logo: 'assets/images/granola-devreno.webp',
+            class: 'theme-gearfire'
+        },
+        {
+            name: 'lightning',
+            background: "url('assets/images/Reno-Lightning.webp')",
+            logo: 'assets/images/granola-devreno.webp',
+            class: 'theme-lightning'
+        },
+        {
+            name: 'winter',
+            background: "url('assets/images/Reno-snow.jpg')",
+            logo: 'assets/images/granola-devreno.webp',
+            class: 'theme-winter'
         }
     ];
     
-    // Determine default theme based on Pacific Time
+    // Determine default theme based on Pacific Time and season
     function getDefaultThemeIndex() {
         const now = new Date();
         // Convert to Pacific Time
         const pacificTime = new Date(now.toLocaleString("en-US", {timeZone: "America/Los_Angeles"}));
         const hour = pacificTime.getHours();
-        
-        // 6 AM to 6 PM (6-17) = environmental theme (index 0)
-        // 6 PM to 6 AM (18-23, 0-5) = disco theme (index 1)
-        return (hour >= 6 && hour < 18) ? 0 : 1;
+        const month = pacificTime.getMonth(); // 0-11 (Jan=0, Dec=11)
+
+        // Night time (6 PM to 6 AM): Always disco theme
+        if (hour < 6 || hour >= 18) {
+            return 1; // disco theme
+        }
+
+        // Daytime (6 AM to 6 PM): Seasonal themes
+        // July (6) and August (7): gearfire theme
+        if (month === 6 || month === 7) {
+            return 2; // gearfire theme
+        }
+        // November (10) - February (1): winter theme
+        else if (month >= 10 || month <= 1) {
+            return 4; // winter theme
+        }
+        // March (2) - May (4): lightning theme
+        else if (month >= 2 && month <= 4) {
+            return 3; // lightning theme
+        }
+        // June (5), September (8), and October (9): environmental theme
+        else {
+            return 0; // environmental theme
+        }
     }
     
     let currentThemeIndex = getDefaultThemeIndex();
@@ -147,18 +185,48 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Enter') {
             const command = terminalInput.value.trim();
             promptCount++;
-            
+
             // Remove cursor from current prompt line and show the command
             const currentPromptLine = document.querySelector('.prompt-line:last-child');
             if (currentPromptLine) {
                 const cursor = currentPromptLine.querySelector('.cursor');
-                if (cursor) cursor.remove();
-                
+                const typingDisplay = currentPromptLine.querySelector('#typing-display');
+
+                // Remove the typing display if it exists
+                if (typingDisplay) {
+                    typingDisplay.remove();
+                }
+
                 // Add the typed command to this line
                 const typedCommand = document.createElement('span');
-                typedCommand.textContent = ' ' + command;
-                typedCommand.style.color = '#00ff88';
-                currentPromptLine.appendChild(typedCommand);
+                typedCommand.textContent = command;
+                typedCommand.style.marginLeft = '8px';
+
+                // Use theme-appropriate color for the command
+                const currentTheme = document.body.className;
+                if (currentTheme.includes('theme-disco')) {
+                    typedCommand.style.color = '#ff00ff';
+                    typedCommand.style.textShadow = '0 0 10px #ff00ff';
+                } else if (currentTheme.includes('theme-gearfire')) {
+                    typedCommand.style.color = '#ff6600';
+                    typedCommand.style.textShadow = '0 0 10px #ff6600';
+                } else if (currentTheme.includes('theme-lightning')) {
+                    typedCommand.style.color = '#00ddff';
+                    typedCommand.style.textShadow = '0 0 10px #00ddff';
+                } else if (currentTheme.includes('theme-winter')) {
+                    typedCommand.style.color = '#85c1e9';
+                    typedCommand.style.textShadow = '0 0 5px rgba(255, 255, 255, 0.6)';
+                } else {
+                    typedCommand.style.color = '#4ecdc4';
+                }
+
+                // Insert before cursor or append to end
+                if (cursor) {
+                    currentPromptLine.insertBefore(typedCommand, cursor);
+                    cursor.remove();
+                } else {
+                    currentPromptLine.appendChild(typedCommand);
+                }
             }
             
             // Create response

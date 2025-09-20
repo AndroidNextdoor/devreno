@@ -4,7 +4,7 @@
 
 echo "Starting /dev/reno development server..."
 echo "Environment: Development"
-
+cd ..
 # Check if node_modules exists, install dependencies if not
 if [ ! -d "node_modules" ]; then
     echo "Installing dependencies..."

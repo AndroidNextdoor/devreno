@@ -5,6 +5,8 @@
   ],
   "routes": [
     { "handle": "filesystem" },
+    { "src": "^/$", "dest": "/index.html" },
+    { "src": "^/jobs$", "dest": "/jobs.html" },
     { "src": "/api/(.*)", "dest": "/server.js" }
   ],
   "env": { "NODE_ENV": "production" }

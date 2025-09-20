@@ -249,6 +249,11 @@ app.get('/api/all-jobs', async (req, res) => {
         const limit = parseInt(req.query.limit) || 20;
         const distance = req.query.distance !== undefined ? parseInt(req.query.distance) : 75;
 
+        // Determine base URL from the incoming request (works locally and on Vercel)
+        const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+        const host = req.get('host');
+        const baseUrl = `${protocol}://${host}`;
+
         // Fetch local and remote jobs based on distance
         let localData = { jobs: [], hasMore: false };
         let remoteData = { jobs: [], hasMore: false };
@@ -256,14 +261,14 @@ app.get('/api/all-jobs', async (req, res) => {
         if (distance > 0) {
             // Fetch both local and remote jobs in parallel
             const [localResponse, remoteResponse] = await Promise.all([
-                fetch(`http://localhost:${PORT}/api/local-jobs?page=${Math.ceil(page/2)}&limit=${Math.ceil(limit/2)}&distance=${distance}`),
-                fetch(`http://localhost:${PORT}/api/remote-jobs?page=${Math.ceil(page/2)}&limit=${Math.floor(limit/2)}`)
+                fetch(`${baseUrl}/api/local-jobs?page=${Math.ceil(page/2)}&limit=${Math.ceil(limit/2)}&distance=${distance}`),
+                fetch(`${baseUrl}/api/remote-jobs?page=${Math.ceil(page/2)}&limit=${Math.floor(limit/2)}`)
             ]);
             localData = await localResponse.json();
             remoteData = await remoteResponse.json();
         } else {
             // Only fetch remote jobs when distance is 0 (Remote Only mode)
-            const remoteResponse = await fetch(`http://localhost:${PORT}/api/remote-jobs?page=${page}&limit=${limit}`);
+            const remoteResponse = await fetch(`${baseUrl}/api/remote-jobs?page=${page}&limit=${limit}`);
             remoteData = await remoteResponse.json();
             // Ensure no local jobs are included
             localData = { jobs: [], hasMore: false, total: 0 };
@@ -296,12 +301,17 @@ app.get('/health', (req, res) => {
     res.json({
         status: 'ok',
         timestamp: new Date().toISOString(),
-        environment: 'development'
+        environment: process.env.VERCEL ? 'production' : 'development'
     });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`/dev/reno server running on http://0.0.0.0:${PORT}`);
-    console.log('Environment: Development');
-    console.log('Ready to accept connections...');
-});
+// Only start the server when running locally. In Vercel, the app is handled by the serverless runtime.
+if (require.main === module) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`/dev/reno server running on http://0.0.0.0:${PORT}`);
+        console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+        console.log('Ready to accept connections...');
+    });
+}
+
+module.exports = app;

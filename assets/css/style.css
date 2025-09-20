@@ -54,25 +54,26 @@
 
 /* Gearfire Theme */
 .theme-gearfire {
-    --bg: #1a0800;
-    --surface: #2a1000;
-    --ink: #ff4500;
-    --ink-muted: #cc3300;
-    --sky-400: #ff6600;
-    --sky-500: #ff4500;
-    --forest-500: #ff3300;
-    --forest-600: #cc2200;
-    --wood-300: #ffaa44;
-    --wood-400: #ff8822;
-    --accent-500: #ff6600;
-    --accent-600: #ff4400;
-    --line: #440800;
-    --shadow: 0 8px 24px rgba(255, 69, 0, 0.6);
-    --terminal-bg: rgba(20, 8, 0, 0.95);
-    --terminal-border: rgba(255, 102, 0, 0.8);
-    --terminal-text: #ff6600;
-    --terminal-prompt: #ffaa00;
-    --hero-overlay: linear-gradient(135deg, rgba(255, 69, 0, 0.4), rgba(255, 140, 0, 0.3));
+    /* Shifted from orange/red to warm yellow/tan palette */
+    --bg: #120e00; /* deep warm brown/amber */
+    --surface: #231a00; /* dark tan surface */
+    --ink: #d4a017; /* ochre text/accent */
+    --ink-muted: #b38b00; /* muted amber */
+    --sky-400: #ffd166; /* soft amber */
+    --sky-500: #f4c430; /* saffron */
+    --forest-500: #c99700; /* warm goldenrod */
+    --forest-600: #a36d00; /* darker amber/brown */
+    --wood-300: #d2b48c; /* tan */
+    --wood-400: #c19a6b; /* khaki brown */
+    --accent-500: #f4c430; /* saffron accent */
+    --accent-600: #d4a017; /* ochre accent */
+    --line: #332400; /* dark brown divider */
+    --shadow: 0 8px 24px rgba(244, 196, 48, 0.45);
+    --terminal-bg: rgba(18, 14, 0, 0.95);
+    --terminal-border: rgba(244, 196, 48, 0.6);
+    --terminal-text: #f4c430;
+    --terminal-prompt: #d4a017;
+    --hero-overlay: linear-gradient(135deg, rgba(244, 196, 48, 0.35), rgba(193, 154, 107, 0.25));
 }
 
 /* Lightning Theme */
@@ -964,16 +965,16 @@ body {
     color: var(--accent-500);
     animation: blink 1s infinite;
     font-weight: bold;
-    cursor: pointer;
+    cursor: default;
     display: none;
 }
 
-.prompt-line:last-child .cursor {
+.prompt-line:last-of-type .cursor {
     display: inline;
 }
 
 .prompt-line {
-    cursor: pointer;
+    cursor: default;
 }
 
 @keyframes blink {
@@ -1249,6 +1250,43 @@ body {
 
 .nav-link i {
     font-size: 16px;
+}
+
+/* Themed defaults for Home/Jobs buttons: dark by default, light on hover */
+.theme-environmental .nav-link,
+.theme-disco .nav-link,
+.theme-gearfire .nav-link,
+.theme-lightning .nav-link,
+.theme-winter .nav-link {
+    background: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.theme-environmental .nav-link i,
+.theme-disco .nav-link i,
+.theme-gearfire .nav-link i,
+.theme-lightning .nav-link i,
+.theme-winter .nav-link i {
+    color: #ffffff;
+}
+
+.theme-environmental .nav-link:hover,
+.theme-disco .nav-link:hover,
+.theme-gearfire .nav-link:hover,
+.theme-lightning .nav-link:hover,
+.theme-winter .nav-link:hover {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.theme-environmental .nav-link:hover i,
+.theme-disco .nav-link:hover i,
+.theme-gearfire .nav-link:hover i,
+.theme-lightning .nav-link:hover i,
+.theme-winter .nav-link:hover i {
+    color: var(--ink);
 }
 
 /* Jobs Page Styles */

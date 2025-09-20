@@ -73,27 +73,63 @@ document.addEventListener('DOMContentLoaded', function() {
     const headerLogo = document.querySelector('.header-logo');
     const prevBtn = document.getElementById('slider-prev');
     const nextBtn = document.getElementById('slider-next');
+
+    // Helper to map theme name to index
+    function getIndexByThemeName(name) {
+        if (!name) return -1;
+        const idx = themes.findIndex(t => t.name.toLowerCase() === String(name).toLowerCase());
+        return idx;
+    }
+
+    // Load persisted theme from URL (?theme=) or localStorage, else use default
+    (function restoreThemeSelection() {
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const urlTheme = params.get('theme');
+            let idx = getIndexByThemeName(urlTheme);
+            if (idx === -1) {
+                const saved = localStorage.getItem('devreno_theme');
+                idx = getIndexByThemeName(saved);
+            }
+            if (idx !== -1) {
+                currentThemeIndex = idx;
+            }
+        } catch (e) {
+            // ignore parsing/storage errors
+        }
+    })();
     
     function changeTheme(index) {
         currentThemeIndex = index;
         const theme = themes[currentThemeIndex];
         
-        // Update body theme class
+        // Update body theme class (preserve other classes if any)
         document.body.className = theme.class;
         
         // Update hero background
-        heroSection.style.backgroundImage = theme.background;
+        if (heroSection) {
+            heroSection.style.backgroundImage = theme.background;
+        }
         
         // Update header logo
         if (headerLogo) {
             headerLogo.src = theme.logo;
         }
         
+        // Persist selection so it survives navigation
+        try {
+            localStorage.setItem('devreno_theme', theme.name);
+        } catch (e) {
+            // ignore storage errors (private mode, etc.)
+        }
+        
         // Add visual feedback
-        heroSection.style.opacity = '0.7';
-        setTimeout(() => {
-            heroSection.style.opacity = '1';
-        }, 200);
+        if (heroSection) {
+            heroSection.style.opacity = '0.7';
+            setTimeout(() => {
+                heroSection.style.opacity = '1';
+            }, 200);
+        }
         
         console.log(`Theme switched to: ${theme.name}`);
     }
@@ -187,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
             promptCount++;
 
             // Remove cursor from current prompt line and show the command
-            const currentPromptLine = document.querySelector('.prompt-line:last-child');
+            const currentPromptLine = document.querySelector('.prompt-line:last-of-type');
             if (currentPromptLine) {
                 const cursor = currentPromptLine.querySelector('.cursor');
                 if (cursor) cursor.remove();

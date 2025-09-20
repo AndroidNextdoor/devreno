@@ -8,7 +8,12 @@
   ],
   "routes": [
     { "handle": "filesystem" },
-    { "src": "^/jobs$", "dest": "/jobs.html" }
+    { "src": "^/jobs$", "dest": "/jobs.html" },
+    { "src": "^/api/health$", "dest": "/api/health.js" },
+    { "src": "^/api/jobs$", "dest": "/api/jobs.js" },
+    { "src": "^/api/local-jobs$", "dest": "/api/local-jobs.js" },
+    { "src": "^/api/remote-jobs$", "dest": "/api/remote-jobs.js" },
+    { "src": "^/api/all-jobs$", "dest": "/api/all-jobs.js" }
   ],
   "env": { "NODE_ENV": "production" }
 }

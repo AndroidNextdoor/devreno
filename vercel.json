@@ -1,4 +1,8 @@
 {
   "version": 2,
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "^/jobs$", "dest": "/jobs.html" }
+  ],
   "env": { "NODE_ENV": "production" }
 }

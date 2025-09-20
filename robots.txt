@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Allow crawling of all pages
+Allow: /index.html
+Allow: /jobs.html
+Allow: /assets/
+
+# Allow crawling of job-related content
+Allow: /api/jobs
+Allow: /api/local-jobs
+Allow: /api/remote-jobs
+
+# Block access to development and configuration files
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: /.github/
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /server.js
+Disallow: /vercel.json
+Disallow: /_scripts/
+
+# Sitemap location
+Sitemap: https://androidnextdoor.github.io/devreno/sitemap.xml

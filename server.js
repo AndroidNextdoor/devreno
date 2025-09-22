@@ -5,6 +5,42 @@ const { WebClient } = require('@slack/web-api');
 // Simple in-memory cache for job data
 const jobCache = new Map();
 
+// HTML sanitization function
+function sanitizeHtml(html) {
+  if (!html) return '';
+
+  let text = html;
+
+  // First pass: Replace common HTML entities
+  text = text
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&#x27;/g, "'")
+    .replace(/&#x2F;/g, '/')
+    .replace(/&hellip;/g, '...')
+    .replace(/&mdash;/g, '—')
+    .replace(/&ndash;/g, '–');
+
+  // Second pass: Remove all HTML tags (including self-closing and malformed ones)
+  text = text.replace(/<[^>]*\/?>/g, '');
+
+  // Third pass: Handle any remaining encoded entities
+  text = text.replace(/&[a-zA-Z0-9#]+;/g, ' ');
+
+  // Fourth pass: Clean up whitespace
+  text = text
+    .replace(/\s+/g, ' ') // Collapse multiple whitespace
+    .replace(/\n\s*\n/g, '\n') // Remove empty lines
+    .trim(); // Remove leading/trailing whitespace
+
+  return text;
+}
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -294,9 +330,9 @@ app.get('/api/remote-jobs', async (req, res) => {
                 title: job.position,
                 company: job.company,
                 location: 'Remote',
-                salary_min: null,
-                salary_max: null,
-                description: job.description,
+                salary_min: job.salary_min || null,
+                salary_max: job.salary_max || null,
+                description: sanitizeHtml(job.description),
                 url: job.url,
                 created: job.date,
                 type: 'remote',

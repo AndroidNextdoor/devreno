@@ -236,7 +236,7 @@
 
                     return true;
                 })
-                .sort((a, b) => parseFloat(b.ts) - parseFloat(a.ts));
+                .sort((a, b) => parseFloat(a.ts) - parseFloat(b.ts));
 
             if (jobMessages.length === 0) {
                 showEmptyState();

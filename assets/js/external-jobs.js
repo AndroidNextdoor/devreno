@@ -72,27 +72,71 @@
         }
     }
 
-    // Extract key technologies from job description
-    function extractTechStack(description) {
-        if (!description) return [];
-
+    // Extract key technologies from job description and tags
+    function extractTechStack(description, tags) {
         const techKeywords = [
             'JavaScript', 'TypeScript', 'React', 'Vue', 'Angular', 'Node.js', 'Python',
             'Java', 'C#', 'PHP', 'Ruby', 'Go', 'Rust', 'Swift', 'Kotlin',
             'AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'MongoDB', 'PostgreSQL',
-            'MySQL', 'Redis', 'GraphQL', 'REST', 'Git', 'CI/CD'
+            'MySQL', 'Redis', 'GraphQL', 'REST', 'Git', 'CI/CD', 'Django', 'Flask',
+            'Laravel', 'Spring', 'Express', 'FastAPI', 'TensorFlow', 'PyTorch'
         ];
 
         const found = [];
-        const lowerDesc = description.toLowerCase();
 
-        techKeywords.forEach(tech => {
-            if (lowerDesc.includes(tech.toLowerCase()) && found.length < 5) {
-                found.push(tech);
-            }
-        });
+        // Check description if available
+        if (description) {
+            const lowerDesc = description.toLowerCase();
+            techKeywords.forEach(tech => {
+                if (lowerDesc.includes(tech.toLowerCase()) && !found.includes(tech) && found.length < 5) {
+                    found.push(tech);
+                }
+            });
+        }
 
-        return found;
+        // Check tags if available
+        if (tags && Array.isArray(tags)) {
+            const tagsText = tags.join(' ').toLowerCase();
+            techKeywords.forEach(tech => {
+                if (tagsText.includes(tech.toLowerCase()) && !found.includes(tech) && found.length < 5) {
+                    found.push(tech);
+                }
+            });
+
+            // Add relevant tags directly as tech stack if they match common patterns
+            tags.forEach(tag => {
+                if (typeof tag === 'string' && found.length < 5) {
+                    const tagLower = tag.toLowerCase();
+                    // Map common tag patterns to tech names
+                    if (tagLower === 'js') found.push('JavaScript');
+                    else if (tagLower === 'ts') found.push('TypeScript');
+                    else if (tagLower === 'react') found.push('React');
+                    else if (tagLower === 'vue') found.push('Vue');
+                    else if (tagLower === 'angular') found.push('Angular');
+                    else if (tagLower === 'python') found.push('Python');
+                    else if (tagLower === 'java') found.push('Java');
+                    else if (tagLower === 'php') found.push('PHP');
+                    else if (tagLower === 'ruby') found.push('Ruby');
+                    else if (tagLower === 'golang' || tagLower === 'go') found.push('Go');
+                    else if (tagLower === 'rust') found.push('Rust');
+                    else if (tagLower === 'swift') found.push('Swift');
+                    else if (tagLower === 'kotlin') found.push('Kotlin');
+                    // Role-based inferences for common patterns
+                    else if (tagLower === 'frontend' || tagLower === 'front end') found.push('JavaScript');
+                    else if (tagLower === 'backend' || tagLower === 'back end') found.push('Node.js');
+                    else if (tagLower === 'full stack' || tagLower === 'fullstack') {
+                        if (!found.includes('JavaScript')) found.push('JavaScript');
+                        if (!found.includes('Node.js') && found.length < 5) found.push('Node.js');
+                    }
+                    else if (tagLower === 'web dev' || tagLower === 'web') found.push('JavaScript');
+                    else if (tagLower === 'mobile') found.push('React Native');
+                    else if (tagLower === 'devops') found.push('AWS');
+                }
+            });
+        }
+
+        // Remove duplicates and limit to 5
+        return [...new Set(found)].slice(0, 5);
     }
 
     // Normalize known location anomalies for display
@@ -105,7 +149,7 @@
     function createExternalJobCard(job) {
         const salary = formatSalary(job.salary_min, job.salary_max);
         const date = formatJobDate(job.created);
-        const techStack = extractTechStack(job.description);
+        const techStack = extractTechStack(job.description, job.tags);
         const isLocal = job.type === 'local';
         const displayLocation = normalizeLocation(job.location);
 
@@ -236,7 +280,7 @@
 
             // Tech filter
             if (currentFilters.tech !== 'all') {
-                const techStack = extractTechStack(job.description);
+                const techStack = extractTechStack(job.description, job.tags);
                 const hasMatchingTech = techStack.some(tech =>
                     tech.toLowerCase().includes(currentFilters.tech.toLowerCase())
                 );
@@ -262,6 +306,8 @@
                 const sMin = typeof job.salary_min === 'number' ? job.salary_min : (job.salary_min ? Number(job.salary_min) : NaN);
                 const sMax = typeof job.salary_max === 'number' ? job.salary_max : (job.salary_max ? Number(job.salary_max) : NaN);
                 const best = !isNaN(sMax) ? sMax : (!isNaN(sMin) ? sMin : NaN);
+
+
                 if (isNaN(best) || best < min) return false;
             }
 

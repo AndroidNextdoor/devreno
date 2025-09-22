@@ -1,6 +1,9 @@
 // Simple in-memory cache (may persist briefly between invocations)
 const jobCache = new Map();
 
+// Clear cache on startup to ensure fresh data
+jobCache.clear();
+
 function getCacheKey(type, page) {
   return `${type}_jobs_page_${page}`;
 }
@@ -8,6 +11,41 @@ function getCacheKey(type, page) {
 function isCacheValid(timestamp) {
   const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
   return Date.now() - timestamp < CACHE_DURATION;
+}
+
+function sanitizeHtml(html) {
+  if (!html) return '';
+
+  let text = html;
+
+  // First pass: Replace common HTML entities
+  text = text
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&#x27;/g, "'")
+    .replace(/&#x2F;/g, '/')
+    .replace(/&hellip;/g, '...')
+    .replace(/&mdash;/g, '—')
+    .replace(/&ndash;/g, '–');
+
+  // Second pass: Remove all HTML tags (including self-closing and malformed ones)
+  text = text.replace(/<[^>]*\/?>/g, '');
+
+  // Third pass: Handle any remaining encoded entities
+  text = text.replace(/&[a-zA-Z0-9#]+;/g, ' ');
+
+  // Fourth pass: Clean up whitespace
+  text = text
+    .replace(/\s+/g, ' ') // Collapse multiple whitespace
+    .replace(/\n\s*\n/g, '\n') // Remove empty lines
+    .trim(); // Remove leading/trailing whitespace
+
+  return text;
 }
 
 module.exports = async (req, res) => {
@@ -45,20 +83,29 @@ module.exports = async (req, res) => {
         job.position.toLowerCase().includes('node')
       ))
       .slice((page - 1) * limit, page * limit)
-      .map(job => ({
-        id: job.id,
-        title: job.position,
-        company: job.company,
-        location: 'Remote',
-        salary_min: null,
-        salary_max: null,
-        description: job.description,
-        url: job.url,
-        created: job.date,
-        type: 'remote',
-        source: 'remoteok',
-        tags: job.tags || []
-      }));
+      .map((job, index) => {
+        const mappedJob = {
+          id: job.id,
+          title: job.position,
+          company: job.company,
+          location: 'Remote',
+          salary_min: job.salary_min || null,
+          salary_max: job.salary_max || null,
+          description: sanitizeHtml(job.description),
+          url: job.url,
+          created: job.date,
+          type: 'remote',
+          source: 'remoteok',
+          tags: job.tags || []
+        };
+
+        // Debug: Log salary info for first few jobs
+        if (index < 3) {
+          console.log(`Job: ${job.position}, Salary: ${job.salary_min}-${job.salary_max}`);
+        }
+
+        return mappedJob;
+      });
 
     const result = {
       jobs: softwareJobs,
